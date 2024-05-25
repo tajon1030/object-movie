@@ -1,29 +1,21 @@
 package com.objectbook.movie.vo;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Objects;
 
-public class Money {
-    private final BigDecimal value;
+public record Money(BigDecimal value) {
+    public static final Money ZERO = Money.of(0L);
 
-    public Money(BigDecimal value){
-        this.value = value;
+    public static Money of(long value) {
+        return new Money(BigDecimal.valueOf(value));
     }
 
-    public BigDecimal getValue() {
-        return value;
-    }
-
-    public Money times(double rate){
+    public Money times(double rate) {
         return new Money(this.value.multiply(BigDecimal.valueOf(rate)));
     }
 
-    public Money minus(Money salePrice) {
-        BigDecimal result = this.value.subtract(salePrice.value)
-                .multiply(BigDecimal.valueOf(100))
-                .divide(this.value, RoundingMode.HALF_EVEN);
-        return new Money(result);
+    public Money minus(Money money) {
+        return new Money(this.value.subtract(money.value));
     }
 
     @Override
@@ -39,8 +31,4 @@ public class Money {
         return Objects.equals(value, money.value);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(value);
-    }
 }
