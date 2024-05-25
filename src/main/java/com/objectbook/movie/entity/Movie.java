@@ -6,7 +6,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.Duration;
-import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,10 +25,7 @@ public class Movie {
 
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "fee"))
-    private Money price;
-
-    @OneToMany(mappedBy = "movie")
-    private List<Screen> screens;
+    private Money fee;
 
     @OneToOne(mappedBy = "movie")
     private DiscountPolicy discountPolicy;
@@ -40,5 +36,13 @@ public class Movie {
 
     public void setRunningTime(int hours, int minutes) {
         this.runningTime = Duration.ofHours(hours).plusMinutes(minutes);
+    }
+
+    public Money calculateDiscountedMovieFee(Screen screen) {
+        return fee.minus(discountPolicy.calculateDiscountAmount(screen));
+    }
+
+    public void changeDiscountPolicy(DiscountPolicy discountPolicy) {
+        this.discountPolicy = discountPolicy;
     }
 }
