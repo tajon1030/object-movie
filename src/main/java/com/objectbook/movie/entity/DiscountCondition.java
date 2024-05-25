@@ -1,35 +1,28 @@
 package com.objectbook.movie.entity;
 
-
-import com.objectbook.movie.entity.enums.ConditionType;
 import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.LocalTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder
 @AllArgsConstructor
-@Builder
 @Getter
-public class DiscountCondition {
+@DiscriminatorColumn(name = "condition")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public abstract class DiscountCondition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated
-    private ConditionType conditionType;
-
-    private Integer dateOfWeek;
-
-    private LocalTime startTime;
-
-    private LocalTime endTime;
-
-    private Long screenSeq;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_policy_id")
     private DiscountPolicy discountPolicy;
+
+    abstract boolean isSatisfiedBy(Screen screen);
 }
