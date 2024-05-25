@@ -4,9 +4,10 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum PolicyType {
-    DISCOUNT_AMOUNT("amount"),
-    DISCOUNT_PERCENTAGE("percentage");
+public enum DiscountPolicyType {
+    NONE("none"),
+    AMOUNT("amount"),
+    PERCENTAGE("percentage");
 
     private final String policy;
 

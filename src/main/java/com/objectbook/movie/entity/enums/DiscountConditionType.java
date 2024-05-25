@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
-public enum ConditionType {
-    ORDER_CONDITION("order"),
-    DURATION_CONDITION("duration");
+public enum DiscountConditionType {
+    SEQUENCE("seq"),
+    PERIOD("period");
 
     private final String condition;
 
